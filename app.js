@@ -20,9 +20,21 @@ var blogSchema = new mongoose.Schema({
 var Blog = mongoose.model("Blog", blogSchema);
 
 // ROUTES
+
+// ROOT ROUTE - redirect to index
+app.get("/", (req,res) => {
+    res.redirect("blogs");
+});
+
 // INDEX - list all blogs
 app.get("/blogs", (req,res) => {
-    res.render("index");
+    Blog.find({}, (err,blogs) => {
+        if(err) {
+            throw err;
+        } else {
+            res.render("index", {blogs: blogs})
+        }
+    })
 });
 
 // NEW - show new blog form

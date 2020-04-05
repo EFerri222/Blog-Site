@@ -1,5 +1,14 @@
 <%- include("partials/header"); %>
 
-INDEX
+<h1>Index</h1>
+
+<% blogs.forEach(blog => { %>
+    <div>
+        <h2><%= blog.title %></h2>
+        <img src="<%= blog.image %>" alt="">
+        <p><%= blog.body %></p>
+        <p>Post created on <%= blog.created %></p>
+    </div>
+<% }); %>
 
 <%- include("partials/footer"); %>
