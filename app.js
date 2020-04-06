@@ -2,13 +2,15 @@ var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
+var expressSanitizer = require("express-sanitizer");
 var mongoose = require("mongoose");
 
 // APP CONFIG
 mongoose.connect('mongodb://localhost:27017/blog-site', {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('useFindAndModify', false);
-app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(express.static("public"));
 // What to look for in query string
 app.use(methodOverride("_method"));
@@ -52,6 +54,8 @@ app.post("/blogs", (req,res) => {
     if(req.body.blog.image === "") {
         req.body.blog.image = undefined;
     }
+    // Sanitize blog body
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     // Create new blog
     Blog.create(req.body.blog, (err,blog) => {
         if(err) {
@@ -87,6 +91,8 @@ app.get("/blogs/:id/edit", (req,res) => {
 
 // UPDATE - update a particular blog, then redirect to index
 app.put("/blogs/:id", (req,res) => {
+    // Sanitize blog body
+    req.body.blog.body = req.sanitize(req.body.blog.body);
     // First argument is id, second is data to use for update
     Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err,blog) => {
         if(err) {

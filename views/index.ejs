@@ -9,9 +9,9 @@
         <span>Post created on <%= blog.created %></span>
         <p>
             <% if(blog.body.length > 100) { %>
-                <%= blog.body.substring(0,100) %>...
+                <%- blog.body.substring(0,100) %>...
             <% } else { %>
-                <%= blog.body %>
+                <%- blog.body %>
             <% } %>
         </p>
         <a href="/blogs/<%= blog._id %>">Read More</a>

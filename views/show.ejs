@@ -9,7 +9,7 @@
                 <span>Post created on <%= blog.created.toDateString() %> at <%= blog.created.toLocaleTimeString() %></span>
             </div>
             <div class="description">
-                <p><%= blog.body %></p>
+                <p><%- blog.body %></p>
             </div>
         </div>
         <a class="ui button" href="/blogs/<%= blog._id %>/edit">Edit Post</a>
