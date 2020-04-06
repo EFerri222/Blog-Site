@@ -100,9 +100,15 @@ app.put("/blogs/:id", (req,res) => {
 
 // DESTROY - delete a particular blog, then redirect to index
 app.delete("/blogs/:id", (req,res) => {
-    // Delete blog
-    // Redirect to index
-    // res.render("index");
+    // Find blog by id and destroy
+    Blog.findByIdAndRemove(req.params.id, (err,blog) => {
+        if(err) {
+            throw err;
+        } else {
+            // Redirect to index
+            res.redirect("/blogs");
+        }
+    });
 });
 
 // SERVER CONFIG
