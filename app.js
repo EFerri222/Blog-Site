@@ -1,13 +1,17 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var methodOverride = require("method-override");
 var mongoose = require("mongoose");
 
 // APP CONFIG
 mongoose.connect('mongodb://localhost:27017/blog-site', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useFindAndModify', false);
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+// What to look for in query string
+app.use(methodOverride("_method"));
 
 // MONGOOSE/MODEL CONFIG
 var blogSchema = new mongoose.Schema({
@@ -32,9 +36,9 @@ app.get("/blogs", (req,res) => {
         if(err) {
             throw err;
         } else {
-            res.render("index", {blogs: blogs})
+            res.render("index", {blogs: blogs});
         }
-    })
+    });
 });
 
 // NEW - show new blog form
@@ -72,14 +76,26 @@ app.get("/blogs/:id", (req,res) => {
 
 // EDIT - show edit form for one blog
 app.get("/blogs/:id/edit", (req,res) => {
-    res.render("edit");
+    Blog.findById(req.params.id, (err,blog) => {
+        if(err) {
+            throw err;
+        } else {
+            res.render("edit", {blog: blog});
+        }
+    });
 });
 
 // UPDATE - update a particular blog, then redirect to index
 app.put("/blogs/:id", (req,res) => {
-    // Update blog
-    // Redirect to index
-    // res.render("index");
+    // First argument is id, second is data to use for update
+    Blog.findByIdAndUpdate(req.params.id, req.body.blog, (err,blog) => {
+        if(err) {
+            throw err;
+        } else {
+            // Redirect to index
+            res.redirect("/blogs");
+        }
+    });
 });
 
 // DESTROY - delete a particular blog, then redirect to index
