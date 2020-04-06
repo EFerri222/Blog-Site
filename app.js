@@ -45,8 +45,14 @@ app.get("/blogs/new", (req,res) => {
 // CREATE - create a new blog, then redirect to index
 app.post("/blogs", (req,res) => {
     // Create new blog
-    // Redirect to index
-    // res.render("index");
+    Blog.create(req.body.blog, (err,blog) => {
+        if(err) {
+            throw err;
+        } else {
+            // Redirect to index
+            res.redirect("/blogs");
+        }
+    })
 });
 
 // SHOW - show info about one specific blog
