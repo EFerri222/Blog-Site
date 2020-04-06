@@ -6,7 +6,13 @@
     <div>
         <h2><%= blog.title %></h2>
         <img src="<%= blog.image %>" alt="">
-        <p><%= blog.body %></p>
+        <p>
+            <% if(blog.body.length > 100) { %>
+                <%= blog.body.substring(0,100) %>...
+            <% } else { %>
+                <%= blog.body %>
+            <% } %>
+        </p>
         <a href="/blogs/<%= blog._id %>">Read More</a>
         <p><span>Post created on <%= blog.created %></p></span>
     </div>
