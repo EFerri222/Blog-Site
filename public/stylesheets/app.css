@@ -17,3 +17,12 @@ span {
 i.chevron {
     font-size: 1em;
 }
+
+body {
+    background-image: url("../background-opacity.png");
+    background-size: cover;
+}
+
+.ui.top.attached.segment, .ui.main.text.container.segment {
+    background-color: rgba(245,222,179,0.8);
+}

@@ -18,7 +18,7 @@ app.use(methodOverride("_method"));
 // MONGOOSE/MODEL CONFIG
 var blogSchema = new mongoose.Schema({
     title: String,
-    image: {type: String, default: "https://contentgrid.homedepot-static.com/hdus/en_US/DTCCOMNEW/fetch/Category_Pages/Lighting_and_Fans/standard-light-bulb-x.png"},
+    image: {type: String, default: "https://cdn.discordapp.com/attachments/368098364270837762/696628627470549122/default.png"},
     body: String,
     created: {type: Date, default: Date.now}
 });
