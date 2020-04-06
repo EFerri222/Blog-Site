@@ -3,7 +3,7 @@
 <div class="ui main text container segment">
     <div class="ui huge header"><%= blog.title %></div>
     <div class="ui top attached">
-        <div class="item">
+        <div class="item" style="margin-bottom: 1em;">
             <img class="ui centered rounded image" src="<%= blog.image %>">
             <div class="content">
                 <span>Post created on <%= blog.created.toDateString() %> at <%= blog.created.toLocaleTimeString() %></span>
@@ -12,6 +12,10 @@
                 <p><%= blog.body %></p>
             </div>
         </div>
+        <a class="ui button" href="/blogs/<%= blog._id %>/edit">Edit Post</a>
+        <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" id="delete">
+            <button class="ui red button">Delete Post</button>
+        </form>
     </div>
 </div>
 
