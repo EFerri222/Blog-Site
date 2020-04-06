@@ -12,7 +12,7 @@ app.use(express.static("public"));
 // MONGOOSE/MODEL CONFIG
 var blogSchema = new mongoose.Schema({
     title: String,
-    image: String,
+    image: {type: String, default: "https://contentgrid.homedepot-static.com/hdus/en_US/DTCCOMNEW/fetch/Category_Pages/Lighting_and_Fans/standard-light-bulb-x.png"},
     body: String,
     created: {type: Date, default: Date.now}
 });
@@ -44,6 +44,10 @@ app.get("/blogs/new", (req,res) => {
 
 // CREATE - create a new blog, then redirect to index
 app.post("/blogs", (req,res) => {
+    // If image field is left blank set to undefined so it will use default image
+    if(req.body.blog.image === "") {
+        req.body.blog.image = undefined;
+    }
     // Create new blog
     Blog.create(req.body.blog, (err,blog) => {
         if(err) {
@@ -52,12 +56,18 @@ app.post("/blogs", (req,res) => {
             // Redirect to index
             res.redirect("/blogs");
         }
-    })
+    });
 });
 
 // SHOW - show info about one specific blog
 app.get("/blogs/:id", (req,res) => {
-    res.render("show");
+    Blog.findById(req.params.id, (err,blog) => {
+        if(err) {
+            throw err;
+        } else {
+            res.render("show", {blog: blog});
+        }
+    });
 });
 
 // EDIT - show edit form for one blog
@@ -84,4 +94,4 @@ var PORT = process.env.PORT || 3000;
 
 app.listen(PORT, function() {
     console.log("Server is listening on port " + PORT);
-})
+});
